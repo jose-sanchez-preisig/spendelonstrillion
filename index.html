@@ -253,6 +253,45 @@
   }
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
+
+  .support-section{
+    max-width:960px;
+    margin:64px auto 0;
+    padding:0 16px;
+    text-align:center;
+  }
+  .support-title{
+    font-size:clamp(22px,4vw,30px);
+    line-height:1.15;
+    letter-spacing:-.03em;
+    margin-bottom:10px;
+    color:var(--text);
+    font-weight:800;
+  }
+  .support-subtitle{
+    color:var(--muted);
+    font-size:14px;
+    margin-bottom:20px;
+  }
+  .kofi-frame-wrap{
+    max-width:430px;
+    margin:0 auto;
+    border-radius:18px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    background:#f9f9f9;
+  }
+  .kofi-frame-wrap iframe{
+    display:block;
+    border:none;
+    width:100%;
+    background:#f9f9f9;
+  }
+  @media(max-width:560px){
+    .support-section{margin-top:46px}
+    .kofi-frame-wrap iframe{height:620px}
+  }
+
   footer{
     border-top:1px solid var(--line);
     padding:26px 20px 46px;text-align:center;font-size:12px;color:#666;
@@ -261,6 +300,17 @@
   footer a{color:#888}
   footer .credit{margin-top:6px}
 </style>
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-F43XKSSTXG"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-F43XKSSTXG');
+</script>
+
 </head>
 <body>
 
@@ -289,8 +339,8 @@
 <!-- ===== HERO ===== -->
 <header class="hero">
   <div class="portrait">
-    <img id="elonImg" crossorigin="anonymous"
-      src="https://commons.wikimedia.org/wiki/Special:FilePath/Elon_Musk_Royal_Society_(crop2).jpg?width=640"
+    <img id="elonImg"
+      src="/elon-musk.jpg"
       alt="Elon Musk">
   </div>
   <div class="hero-copy">
@@ -353,6 +403,20 @@
 <canvas id="cardCanvas" width="1080" height="1350" style="display:none"></canvas>
 <div class="toast" id="toast"></div>
 
+
+<section class="support-section" id="supportSection">
+  <h3 class="support-title" id="supportTitle" data-i18n="supportTitle">🚀 Enjoyed the project?</h3>
+  <p class="support-subtitle" data-i18n="supportSubtitle">Help keep weird internet experiments alive.</p>
+  <div class="kofi-frame-wrap">
+    <iframe
+      id="kofiframe"
+      src="https://ko-fi.com/josig/?hidefeed=true&widget=true&embed=true&preview=true"
+      height="580"
+      title="josig">
+    </iframe>
+  </div>
+</section>
+
 <footer>
   <div data-i18n="disclaimer">Parody & entertainment. Net worth estimated as of June 12, 2026 (Forbes / CNBC). Prices are approximate.</div>
   <div class="credit" data-i18n-html="credit">Inspired by <a href="https://neal.fun/spend/" target="_blank" rel="noopener">"Spend Bill Gates' Money" by Neal Agarwal</a> · Photo: <a href="https://commons.wikimedia.org/wiki/File:Elon_Musk_Royal_Society_(crop2).jpg" target="_blank" rel="noopener">The Royal Society, CC BY-SA</a>, via Wikimedia Commons</div>
@@ -366,7 +430,7 @@ const SITE_DISPLAY = "SpendElonsTrillion.com"; // así se imprime en la share ca
 const ITEMS = [
   {e:"🍔", en:"Big Mac", es:"Big Mac", p:6},
   {e:"☕", en:"Tall Starbucks Frappuccino", es:"Frappuccino alto de Starbucks", p:6},
-  {e:"🍌", en:"Duct-taped banana art", es:"Plátano pegado con cinta a la pared", p:35},
+  {e:"🥫", en:"Can of Coca-Cola", es:"Lata de Coca-Cola", p:2},
   {e:"🪳", en:"Name a zoo cockroach after your ex", es:"Ponerle el nombre de tu ex a una cucaracha de zoo", p:15},
   {e:"🎬", en:"Movie ticket", es:"Entrada al cine", p:15},
   {e:"🍫", en:"Dubai chocolate bar", es:"Barra de Dubai chocolate", p:25},
@@ -377,7 +441,7 @@ const ITEMS = [
   {e:"🚗", en:"Tesla Model 3", es:"Tesla Model 3", p:42000},
   {e:"🧑‍🏫", en:"A teacher's yearly salary", es:"Sueldo anual de un profesor", p:60000},
   {e:"🛻", en:"Cybertruck", es:"Cybertruck", p:100000},
-  {e:"🤿", en:"Dive down to the Titanic", es:"Descender al Titanic", p:250000},
+  {e:"🔱", en:"Titanic submarine expedition", es:"Expedición submarina al Titanic", p:250000},
   {e:"🚑", en:"Fully equipped ambulance", es:"Ambulancia completamente equipada", p:300000},
   {e:"🏠", en:"A house", es:"Una casa", p:420000},
   {e:"🚘", en:"Rolls-Royce Phantom", es:"Rolls-Royce Phantom", p:550000},
@@ -391,7 +455,7 @@ const ITEMS = [
   {e:"🌆", en:"Manhattan penthouse", es:"Penthouse en Manhattan", p:25000000},
   {e:"🦖", en:"T-Rex fossil", es:"Fósil de T-Rex", p:32000000},
   {e:"🏝️", en:"Private island", es:"Isla privada", p:50000000},
-  {e:"🚀", en:"Falcon 9 rocket launch", es:"Lanzamiento de un cohete Falcon 9", p:67000000},
+  {e:"🚀", en:"Buy a Falcon 9 rocket", es:"Comprar un cohete Falcon 9", p:67000000},
   {e:"✈️", en:"Private jet", es:"Jet privado", p:75000000},
   {e:"📚", en:"Fund Wikipedia for a year", es:"Financiar Wikipedia por un año", p:180000000},
   {e:"🛥️", en:"Superyacht", es:"Superyate", p:300000000},
@@ -400,7 +464,7 @@ const ITEMS = [
   {e:"🏙️", en:"Burj Khalifa", es:"Burj Khalifa", p:1500000000},
   {e:"💵", en:"$1 every second for life", es:"$1 dólar por segundo por el resto de tu vida", p:2500000000},
   {e:"🏀", en:"An NBA team", es:"Un equipo de la NBA", p:4000000000},
-  {e:"🦅", en:"Air Force One", es:"Air Force One", p:5300000000},
+  {e:"✈️", en:"Air Force One", es:"Air Force One", p:5300000000},
   {e:"⚽", en:"Real Madrid, the whole club", es:"Real Madrid completo", p:6500000000},
   {e:"🛰️", en:"The entire Starlink network", es:"Toda la red Starlink", p:30000000000},
   {e:"🌍", en:"End world hunger for 1 year (UN)", es:"Eliminar el hambre mundial por 1 año (ONU)", p:40000000000},
@@ -433,6 +497,8 @@ const I18N = {
     title:'Spend Elon Musk\'s <span class="accent">money</span>',
     lede:"After the SpaceX IPO, Elon Musk's fortune hit ~$1,050,000,000,000. For the next few minutes, it's yours. Good luck spending it all.",
     summaryTitle:"YOUR SPENDING SPREE",
+    supportTitle:"🚀 Enjoyed the project?",
+    supportSubtitle:"Help keep weird internet experiments alive.",
     itemsBought:n=>`${n} item${n===1?"":"s"} in your cart`,
     share:"Create my share card", reset:"Reset",
     shareNative:"Share", download:"Download", close:"Close",
@@ -462,6 +528,8 @@ const I18N = {
     title:'Gasta el dinero de <span class="accent">Elon Musk</span>',
     lede:"Tras la salida a bolsa de SpaceX, la fortuna de Elon Musk llegó a ~$1.050.000.000.000. Por los próximos minutos, es tuya. Suerte gastándola.",
     summaryTitle:"TU DERROCHE",
+    supportTitle:"🚀 ¿Te gustó el proyecto?",
+    supportSubtitle:"Ayuda a mantener vivos los experimentos raros de internet.",
     itemsBought:n=>`${n} cosa${n===1?"":"s"} en tu carrito`,
     share:"Crear mi tarjeta", reset:"Reiniciar",
     shareNative:"Compartir", download:"Descargar", close:"Cerrar",
@@ -801,7 +869,22 @@ function applyLang(){
 }
 document.getElementById("langBtn").addEventListener("click", ()=>{
   lang = lang==="en" ? "es" : "en";
-  applyLang();
+  
+const kofiFrameWrap = document.querySelector(".kofi-frame-wrap");
+if(kofiFrameWrap){
+  let kofiTracked = false;
+  kofiFrameWrap.addEventListener("click", ()=>{
+    if(!kofiTracked && typeof gtag === "function"){
+      kofiTracked = true;
+      gtag("event", "kofi_widget_click", {
+        event_category: "monetization",
+        event_label: lang
+      });
+    }
+  });
+}
+
+applyLang();
 });
 
 applyLang();
