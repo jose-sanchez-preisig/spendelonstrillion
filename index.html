@@ -139,7 +139,7 @@
 
   /* ===== Grilla ===== */
   main{max-width:960px;margin:0 auto;padding:8px 16px 90px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:12px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(225px,1fr));gap:12px}
   .item{
     background:var(--surface);
     border:1px solid var(--line);
@@ -173,15 +173,36 @@
   }
   .qty:focus-visible{outline:2px solid var(--green);outline-offset:-2px;border-radius:8px}
 
-  @media(max-width:560px){
-    .grid{grid-template-columns:repeat(2,1fr);gap:9px}
-    .item{padding:15px 10px 11px;border-radius:16px}
-    .item .emoji{font-size:32px}
-    .item .name{font-size:12.5px;min-height:3em}
-    .item .price{font-size:12.5px}
-    .controls button{width:38px;padding:9px 0;font-size:15px}
-    .qty{font-size:13px}
-    main{padding-bottom:110px}
+  @media(max-width:640px){
+    main{padding:8px 12px 110px}
+    .grid{grid-template-columns:1fr;gap:10px}
+    .item{
+      display:grid;
+      grid-template-columns:46px 1fr;
+      grid-template-areas:
+        "emoji name"
+        "emoji price"
+        "controls controls";
+      align-items:center;
+      text-align:left;
+      column-gap:12px;
+      padding:13px 12px;
+      border-radius:16px;
+    }
+    .item:hover{transform:none}
+    .item .emoji{grid-area:emoji;font-size:32px;text-align:center}
+    .item .name{
+      grid-area:name;
+      min-height:0;
+      display:block;
+      font-size:14px;
+      line-height:1.25;
+      color:#F2F2F2;
+    }
+    .item .price{grid-area:price;font-size:13px;margin-top:2px}
+    .item .controls{grid-area:controls;margin-top:11px}
+    .controls button{width:44px;padding:9px 0;font-size:16px}
+    .qty{font-size:13.5px}
   }
 
   /* ===== Resumen ===== */
