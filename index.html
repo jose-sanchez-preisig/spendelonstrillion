@@ -325,6 +325,26 @@
     .kofi-frame-wrap iframe{height:620px}
   }
 
+
+  @media(max-width:680px){
+    .board{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      width:100%;
+      z-index:999;
+      transform:translateZ(0);
+    }
+    body{padding-top:92px}
+    header.hero{padding-top:26px}
+    .milestone{top:104px}
+  }
+
+  @media(max-width:380px){
+    body{padding-top:98px}
+  }
+
   footer{
     border-top:1px solid var(--line);
     padding:26px 20px 46px;text-align:center;font-size:12px;color:#666;
