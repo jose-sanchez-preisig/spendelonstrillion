@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Spend Elon Musk's Money — $1.05 Trillion</title>
+<meta name="description" content="Elon Musk just became history's first trillionaire. You now have $1,050,000,000,000. Good luck spending it.">
+<meta property="og:title" content="Spend Elon Musk's Money 💸">
+<meta property="og:description" content="History's first trillionaire. You have $1.05 trillion. Spend it.">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#0A0A0A;
+    --surface:#141414;
+    --surface-hi:#1B1B1B;
+    --line:#242424;
+    --line-hi:#333;
+    --text:#FAFAFA;
+    --muted:#8A8A8A;
+    --green:#1ED760;          /* único acento */
+    --red:#E5484D;
+    --mono:ui-monospace,'SF Mono','Cascadia Mono','Roboto Mono',Menlo,Consolas,monospace;
+    --sans:-apple-system,BlinkMacSystemFont,'Inter','Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--sans);
+    line-height:1.5;
+    overflow-x:hidden;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important;transition:none !important}
+  }
+
+  /* ===== Barra de saldo sticky ===== */
+  .board{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+    background:rgba(10,10,10,.82);
+    border-bottom:1px solid var(--line);
+    padding:10px 16px 11px;
+    padding-top:max(10px, env(safe-area-inset-top));
+  }
+  .board-inner{max-width:960px;margin:0 auto}
+  .board-row{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .board-label{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .balance{
+    font-family:var(--mono);font-variant-numeric:tabular-nums;
+    font-size:clamp(21px,5.6vw,36px);font-weight:700;letter-spacing:-.01em;
+    color:var(--green);
+    transition:color .2s;
+  }
+  .balance.broke{color:var(--red)}
+  .spentbar{height:3px;background:#1E1E1E;border-radius:2px;margin-top:8px;overflow:hidden}
+  .spentbar > div{height:100%;width:0%;background:var(--green);transition:width .35s ease;border-radius:2px}
+  .board-sub{display:flex;justify-content:space-between;margin-top:6px;font-size:11.5px;color:var(--muted);gap:8px;flex-wrap:wrap}
+  .lang-toggle{
+    background:none;border:1px solid var(--line-hi);color:var(--text);
+    border-radius:999px;padding:4px 14px;font-size:12px;font-weight:700;cursor:pointer;
+  }
+  .lang-toggle:hover{border-color:var(--text)}
+  .lang-toggle:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+
+  /* ===== Banner de hitos ===== */
+  .milestone{
+    position:fixed;top:96px;left:50%;z-index:80;
+    transform:translateX(-50%) translateY(-26px) scale(.97);
+    opacity:0;pointer-events:none;
+    display:flex;align-items:center;gap:12px;
+    max-width:min(92vw,440px);
+    padding:13px 19px;border-radius:16px;
+    background:#161616;
+    border:1px solid var(--line-hi);
+    box-shadow:0 16px 50px rgba(0,0,0,.6);
+    transition:transform .35s cubic-bezier(.2,1.1,.4,1), opacity .3s;
+  }
+  .milestone.show{transform:translateX(-50%) translateY(0) scale(1);opacity:1}
+  .milestone .m-emoji{font-size:30px;line-height:1;flex-shrink:0}
+  .milestone .m-text{font-size:13.5px;font-weight:600;line-height:1.4;color:#E4E4E4}
+  .milestone .m-label{
+    display:block;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--green);margin-bottom:2px;font-weight:800;
+  }
+
+  /* ===== Hero ===== */
+  header.hero{
+    max-width:960px;margin:0 auto;
+    padding:60px 20px 36px;
+    display:flex;align-items:center;gap:40px;justify-content:center;
+  }
+  .portrait{
+    width:148px;height:148px;border-radius:50%;flex-shrink:0;
+    border:1px solid var(--line-hi);
+    padding:5px;
+  }
+  .portrait img{
+    width:100%;height:100%;border-radius:50%;object-fit:cover;object-position:top;
+    display:block;filter:grayscale(1) contrast(1.05);
+  }
+  .hero-copy{max-width:540px}
+  .eyebrow{
+    display:inline-block;font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted);border:1px solid var(--line);border-radius:999px;
+    padding:5px 13px;margin-bottom:16px;font-weight:700;
+  }
+  .eyebrow b{color:var(--green);font-weight:700}
+  .hero h1{
+    font-size:clamp(34px,6.4vw,58px);line-height:.98;letter-spacing:-.04em;font-weight:800;
+  }
+  .hero h1 .accent{color:var(--green)}
+  .hero p.lede{margin-top:14px;font-size:15.5px;color:var(--muted)}
+  .factoid{
+    margin-top:16px;display:inline-block;
+    font-family:var(--mono);font-size:12px;color:var(--muted);
+    border-left:2px solid var(--green);padding:2px 0 2px 12px;
+  }
+  @media(max-width:680px){
+    header.hero{flex-direction:column;text-align:center;gap:22px;padding-top:40px}
+    .portrait{width:112px;height:112px}
+    .factoid{border-left:none;border-top:2px solid var(--green);padding:10px 0 0}
+  }
+
+  .ad-slot{max-width:728px;margin:12px auto;text-align:center}
+
+  /* ===== Grilla ===== */
+  main{max-width:960px;margin:0 auto;padding:8px 16px 90px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(225px,1fr));gap:12px}
+  .item{
+    background:var(--surface);
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:20px 14px 14px;
+    display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;
+    transition:transform .15s ease,border-color .15s ease,background .15s ease;
+  }
+  .item:hover{transform:translateY(-2px);border-color:var(--line-hi);background:var(--surface-hi)}
+  .item .emoji{font-size:40px;line-height:1.15}
+  .item .name{font-weight:600;font-size:14px;min-height:2.7em;display:flex;align-items:center;letter-spacing:-.01em;color:#EDEDED}
+  .item .price{font-family:var(--mono);font-variant-numeric:tabular-nums;color:var(--green);font-weight:700;font-size:14px}
+  .controls{
+    display:flex;align-items:stretch;gap:0;margin-top:11px;width:100%;
+    background:#0E0E0E;border:1px solid var(--line);border-radius:12px;overflow:hidden;
+  }
+  .controls button{
+    border:none;background:none;color:var(--text);
+    font-weight:700;font-size:17px;cursor:pointer;width:44px;flex-shrink:0;
+    padding:10px 0;transition:background .1s;
+  }
+  .controls button:active{background:#222}
+  .controls button:focus-visible{outline:2px solid var(--green);outline-offset:-2px}
+  .controls .minus{color:#777}
+  .controls .minus:hover{color:var(--red)}
+  .controls .plus{background:var(--text);color:#0A0A0A;border-radius:0 11px 11px 0}
+  .controls .plus:active{filter:brightness(.85)}
+  .qty{
+    flex:1;min-width:0;text-align:center;border:none;background:transparent;
+    color:var(--text);font-family:var(--mono);font-variant-numeric:tabular-nums;font-size:14px;font-weight:700;
+  }
+  .qty:focus-visible{outline:2px solid var(--green);outline-offset:-2px;border-radius:8px}
+
+  @media(max-width:560px){
+    .grid{grid-template-columns:repeat(2,1fr);gap:9px}
+    .item{padding:15px 10px 11px;border-radius:16px}
+    .item .emoji{font-size:32px}
+    .item .name{font-size:12.5px;min-height:3em}
+    .item .price{font-size:12.5px}
+    .controls button{width:38px;padding:9px 0;font-size:15px}
+    .qty{font-size:13px}
+    main{padding-bottom:110px}
+  }
+
+  /* ===== Resumen ===== */
+  .summary{
+    margin:54px auto 0;max-width:540px;
+    background:var(--surface);border:1px solid var(--line);border-radius:22px;
+    padding:30px 22px;text-align:center;
+  }
+  .summary h2{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:var(--muted);font-weight:700}
+  .summary .big{
+    font-family:var(--mono);font-variant-numeric:tabular-nums;
+    font-size:clamp(28px,7vw,42px);font-weight:800;margin-top:8px;letter-spacing:-.01em;
+    color:var(--text);
+  }
+  .summary .count{color:var(--muted);font-size:13.5px;margin-top:4px}
+  .actions{display:flex;justify-content:center;gap:10px;margin-top:22px;flex-wrap:wrap}
+  .actions button{
+    border:none;border-radius:999px;padding:14px 28px;font-weight:700;font-size:14.5px;cursor:pointer;
+    font-family:var(--sans);
+  }
+  .actions .share{background:var(--text);color:#0A0A0A}
+  .actions .share:hover{background:#fff}
+  .actions .reset{background:none;border:1px solid var(--line-hi);color:var(--muted)}
+  .actions .reset:hover{color:var(--text);border-color:var(--text)}
+  .actions button:focus-visible{outline:2px solid var(--green);outline-offset:2px}
+
+  /* ===== FAB móvil ===== */
+  .fab{
+    position:fixed;right:14px;bottom:calc(14px + env(safe-area-inset-bottom));z-index:60;
+    display:none;align-items:center;gap:8px;
+    border:none;border-radius:999px;padding:13px 19px;
+    background:var(--text);color:#0A0A0A;
+    font-weight:800;font-size:14px;font-family:var(--sans);cursor:pointer;
+    box-shadow:0 10px 30px rgba(0,0,0,.5);
+    transform:translateY(90px);transition:transform .3s cubic-bezier(.2,1.1,.4,1);
+  }
+  .fab.on{transform:translateY(0)}
+  .fab .fab-amt{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  @media(max-width:680px){.fab{display:flex}}
+
+  /* ===== Modal share card ===== */
+  .modal{
+    position:fixed;inset:0;z-index:100;display:none;
+    align-items:center;justify-content:center;padding:18px;
+    background:rgba(0,0,0,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  }
+  .modal.open{display:flex}
+  .modal-box{max-width:360px;width:100%;text-align:center;max-height:100%;overflow:auto}
+  .modal-box img{
+    width:100%;border-radius:16px;box-shadow:0 24px 80px rgba(0,0,0,.7);
+    border:1px solid var(--line);
+  }
+  .modal-actions{display:flex;gap:9px;margin-top:14px;justify-content:center;flex-wrap:wrap}
+  .modal-actions button,.modal-actions a{
+    border:none;border-radius:999px;padding:12px 22px;font-weight:700;font-size:13.5px;
+    cursor:pointer;text-decoration:none;display:inline-block;font-family:var(--sans);
+  }
+  .dl{background:var(--green);color:#0A0A0A}
+  .nshare{background:var(--text);color:#0A0A0A}
+  .close{background:none;border:1px solid var(--line-hi);color:var(--muted)}
+
+  /* ===== Overlay 100% ===== */
+  .win{
+    position:fixed;inset:0;z-index:110;display:none;
+    align-items:center;justify-content:center;padding:24px;text-align:center;
+    background:rgba(0,0,0,.92);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  }
+  .win.open{display:flex}
+  .win-box{max-width:420px}
+  .win-box .trophy{font-size:70px}
+  .win-box h2{
+    font-size:clamp(30px,8vw,42px);font-weight:800;letter-spacing:-.04em;margin-top:10px;color:var(--green);
+  }
+  .win-box p{color:var(--muted);margin-top:12px;font-size:15px}
+  .win-box .actions{margin-top:24px}
+
+  .toast{
+    position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(90px);
+    background:var(--text);color:#0A0A0A;padding:11px 22px;border-radius:999px;
+    font-size:14px;font-weight:700;opacity:0;transition:all .25s ease;z-index:130;pointer-events:none;
+  }
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:26px 20px 46px;text-align:center;font-size:12px;color:#666;
+    padding-bottom:calc(46px + env(safe-area-inset-bottom));
+  }
+  footer a{color:#888}
+  footer .credit{margin-top:6px}
+</style>
+</head>
+<body>
+
+<!-- ===== STICKY BALANCE ===== -->
+<div class="board" role="status" aria-live="polite">
+  <div class="board-inner">
+    <div class="board-row">
+      <span class="board-label" data-i18n="yourMoney">YOUR MONEY</span>
+      <button class="lang-toggle" id="langBtn" aria-label="Cambiar idioma">ES</button>
+    </div>
+    <div class="balance" id="balance">$1,050,000,000,000</div>
+    <div class="spentbar"><div id="spentFill"></div></div>
+    <div class="board-sub">
+      <span><span data-i18n="spent">Spent</span>: <strong id="spentAmt" style="font-family:var(--mono);color:var(--text)">$0</strong></span>
+      <span id="spentPct" style="font-family:var(--mono)">0.0000%</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BANNER DE HITOS ===== -->
+<div class="milestone" id="milestone" role="alert">
+  <span class="m-emoji" id="mEmoji">🏁</span>
+  <span class="m-text"><span class="m-label" id="mLabel">MILESTONE</span><span id="mText"></span></span>
+</div>
+
+<!-- ===== HERO ===== -->
+<header class="hero">
+  <div class="portrait">
+    <img id="elonImg" crossorigin="anonymous"
+      src="https://commons.wikimedia.org/wiki/Special:FilePath/Elon_Musk_Royal_Society_(crop2).jpg?width=640"
+      alt="Elon Musk">
+  </div>
+  <div class="hero-copy">
+    <span class="eyebrow" data-i18n-html="eyebrow">June 12, 2026 · <b>History's first trillionaire</b></span>
+    <h1 data-i18n-html="title">Spend Elon Musk's <span class="accent">money</span></h1>
+    <p class="lede" data-i18n="lede">After the SpaceX IPO, Elon Musk's fortune hit ~$1,050,000,000,000. For the next few minutes, it's yours. Good luck spending it all.</p>
+    <div class="factoid" id="factoid"></div>
+  </div>
+</header>
+
+<!-- AD SLOT 1 -->
+<div class="ad-slot" id="ad-top"></div>
+
+<main>
+  <div class="grid" id="grid"></div>
+
+  <!-- AD SLOT 2 -->
+  <div class="ad-slot" id="ad-mid"></div>
+
+  <div class="summary" id="summary">
+    <h2 data-i18n="summaryTitle">YOUR SPENDING SPREE</h2>
+    <div class="big" id="summaryAmt">$0</div>
+    <div class="count" id="summaryCount"></div>
+    <div class="actions">
+      <button class="share" id="shareBtn" data-i18n="share">Create my share card</button>
+      <button class="reset" id="resetBtn" data-i18n="reset">Reset</button>
+    </div>
+  </div>
+</main>
+
+<button class="fab" id="fab" aria-label="Share">
+  <span class="fab-amt" id="fabAmt">$0</span> ↗
+</button>
+
+<!-- ===== MODAL CARD ===== -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="modal-box">
+    <img id="cardImg" alt="Share card">
+    <div class="modal-actions">
+      <button class="nshare" id="nativeShare" data-i18n="shareNative">Share</button>
+      <a class="dl" id="downloadLink" download="my-trillion-receipt.png" data-i18n="download">Download</a>
+      <button class="close" id="closeModal" data-i18n="close">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== OVERLAY 100% ===== -->
+<div class="win" id="win">
+  <div class="win-box">
+    <div class="trophy">🏆</div>
+    <h2 data-i18n="winTitle">YOU SPENT IT ALL</h2>
+    <p id="winText"></p>
+    <div class="actions">
+      <button class="share" id="winShare" data-i18n="share">Create my share card</button>
+      <button class="reset" id="winClose" data-i18n="close">Close</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="cardCanvas" width="1080" height="1350" style="display:none"></canvas>
+<div class="toast" id="toast"></div>
+
+<footer>
+  <div data-i18n="disclaimer">Parody & entertainment. Net worth estimated as of June 12, 2026 (Forbes / CNBC). Prices are approximate.</div>
+  <div class="credit" data-i18n-html="credit">Inspired by <a href="https://neal.fun/spend/" target="_blank" rel="noopener">"Spend Bill Gates' Money" by Neal Agarwal</a> · Photo: <a href="https://commons.wikimedia.org/wiki/File:Elon_Musk_Royal_Society_(crop2).jpg" target="_blank" rel="noopener">The Royal Society, CC BY-SA</a>, via Wikimedia Commons</div>
+</footer>
+
+<script>
+const TOTAL = 1050000000000;
+const SITE_URL = "spendelonstrillion.com";
+const SITE_DISPLAY = "SpendElonsTrillion.com"; // así se imprime en la share card
+
+const ITEMS = [
+  {e:"🍔", en:"Big Mac", es:"Big Mac", p:6},
+  {e:"☕", en:"Tall Starbucks Frappuccino", es:"Frappuccino alto de Starbucks", p:6},
+  {e:"🍌", en:"Duct-taped banana art", es:"Plátano pegado con cinta a la pared", p:35},
+  {e:"🪳", en:"Name a zoo cockroach after your ex", es:"Ponerle el nombre de tu ex a una cucaracha de zoo", p:15},
+  {e:"🎬", en:"Movie ticket", es:"Entrada al cine", p:15},
+  {e:"🍫", en:"Dubai chocolate bar", es:"Barra de Dubai chocolate", p:25},
+  {e:"🥤", en:"Stanley cup", es:"Un vaso Stanley", p:45},
+  {e:"🐕", en:"A Shiba Inu (Doge)", es:"Un Shiba Inu (Doge)", p:3500},
+  {e:"💍", en:"Diamond ring", es:"Anillo de diamantes", p:15000},
+  {e:"🪙", en:"1 Bitcoin", es:"1 Bitcoin", p:65000},
+  {e:"🚗", en:"Tesla Model 3", es:"Tesla Model 3", p:42000},
+  {e:"🧑‍🏫", en:"A teacher's yearly salary", es:"Sueldo anual de un profesor", p:60000},
+  {e:"🛻", en:"Cybertruck", es:"Cybertruck", p:100000},
+  {e:"🤿", en:"Dive down to the Titanic", es:"Descender al Titanic", p:250000},
+  {e:"🚑", en:"Fully equipped ambulance", es:"Ambulancia completamente equipada", p:300000},
+  {e:"🏠", en:"A house", es:"Una casa", p:420000},
+  {e:"🚘", en:"Rolls-Royce Phantom", es:"Rolls-Royce Phantom", p:550000},
+  {e:"🏎️", en:"Lamborghini", es:"Lamborghini", p:600000},
+  {e:"🏫", en:"Build a school", es:"Construir una escuela", p:2500000},
+  {e:"🔥", en:"$1,000 a week for life", es:"$1.000 a la semana por el resto de tu vida", p:2600000},
+  {e:"🚽", en:"Solid gold toilet", es:"Inodoro de oro macizo", p:6000000},
+  {e:"🍌", en:"The $6.2M banana art piece", es:"El plátano de $6,2M", p:6200000},
+  {e:"🏈", en:"30-second Super Bowl ad", es:"Comercial de 30 segundos en el Super Bowl", p:8000000},
+  {e:"🏰", en:"Castle in Scotland", es:"Castillo en Escocia", p:10000000},
+  {e:"🌆", en:"Manhattan penthouse", es:"Penthouse en Manhattan", p:25000000},
+  {e:"🦖", en:"T-Rex fossil", es:"Fósil de T-Rex", p:32000000},
+  {e:"🏝️", en:"Private island", es:"Isla privada", p:50000000},
+  {e:"🚀", en:"Falcon 9 rocket launch", es:"Lanzamiento de un cohete Falcon 9", p:67000000},
+  {e:"✈️", en:"Private jet", es:"Jet privado", p:75000000},
+  {e:"📚", en:"Fund Wikipedia for a year", es:"Financiar Wikipedia por un año", p:180000000},
+  {e:"🛥️", en:"Superyacht", es:"Superyate", p:300000000},
+  {e:"🛩️", en:"Brand new Boeing 747", es:"Boeing 747 nuevo", p:420000000},
+  {e:"🖼️", en:"The Mona Lisa", es:"La Mona Lisa", p:1000000000},
+  {e:"🏙️", en:"Burj Khalifa", es:"Burj Khalifa", p:1500000000},
+  {e:"💵", en:"$1 every second for life", es:"$1 dólar por segundo por el resto de tu vida", p:2500000000},
+  {e:"🏀", en:"An NBA team", es:"Un equipo de la NBA", p:4000000000},
+  {e:"🦅", en:"Air Force One", es:"Air Force One", p:5300000000},
+  {e:"⚽", en:"Real Madrid, the whole club", es:"Real Madrid completo", p:6500000000},
+  {e:"🛰️", en:"The entire Starlink network", es:"Toda la red Starlink", p:30000000000},
+  {e:"🌍", en:"End world hunger for 1 year (UN)", es:"Eliminar el hambre mundial por 1 año (ONU)", p:40000000000},
+  {e:"🐦", en:"Buy X and rename it Twitter", es:"Comprar X y cambiarle el nombre a Twitter", p:44000000000},
+  {e:"🗺️", en:"Buy a small country (legally-ish)", es:"Comprar un país pequeño (más o menos legal)", p:50000000000},
+  {e:"💉", en:"Eradicate malaria worldwide", es:"Erradicar la malaria del mundo", p:100000000000},
+  {e:"🍟", en:"McDonald's, the whole company", es:"McDonald's, la empresa completa", p:220000000000},
+  {e:"🧑‍🚀", en:"Crewed Mars program", es:"Programa tripulado a Marte", p:500000000000},
+  {e:"💸", en:"Give $100 to every person on Earth", es:"Darle $100 a cada persona del planeta", p:820000000000},
+];
+
+const MILESTONES = [
+  {v:1e6,    e:"💸", en:"First million spent. Elon earns this back in about 3 minutes.", es:"Tu primer millón gastado. Elon lo recupera en unos 3 minutos."},
+  {v:1e8,    e:"🤯", en:"$100 million — more than most people earn in 1,000 lifetimes.", es:"$100 millones — más de lo que la mayoría gana en 1.000 vidas."},
+  {v:2e9,    e:"🐐", en:"You've now out-spent Messi's entire career earnings.", es:"Ya gastaste más que toda la carrera de Messi."},
+  {v:6e9,    e:"🇫🇯", en:"You've spent more than the GDP of Fiji.", es:"Gastaste más que el PIB de Fiyi."},
+  {v:2.5e10, e:"🛰️", en:"You just blew past NASA's entire annual budget.", es:"Acabas de superar el presupuesto anual completo de la NASA."},
+  {v:5e10,   e:"🎬", en:"More than Hollywood's biggest 100 movies cost, combined.", es:"Más de lo que costaron las 100 películas más caras de Hollywood, juntas."},
+  {v:1.5e11, e:"👴", en:"You've out-spent Bill Gates' entire fortune. The student becomes the master.", es:"Superaste la fortuna completa de Bill Gates. El alumno superó al maestro."},
+  {v:2.5e11, e:"🇳🇿", en:"More than the GDP of New Zealand. An entire country.", es:"Más que el PIB de Nueva Zelanda. Un país entero."},
+  {v:5e11,   e:"🌍", en:"Half a trillion. Only 9 countries produce more in a year.", es:"Medio billón. Solo 9 países producen más en un año."},
+  {v:8e11,   e:"😈", en:"80% gone. Fun fact: Musk made ~$180B back just today.", es:"80% gastado. Dato: Musk recuperó ~$180 mil millones solo hoy."},
+  {v:9.5e11, e:"🔥", en:"95%. The last stretch is the hardest. You can do this.", es:"95%. La recta final es la más difícil. Tú puedes."},
+];
+
+const I18N = {
+  en:{
+    yourMoney:"YOUR MONEY", spent:"Spent",
+    eyebrow:'June 12, 2026 · <b>History\'s first trillionaire</b>',
+    title:'Spend Elon Musk\'s <span class="accent">money</span>',
+    lede:"After the SpaceX IPO, Elon Musk's fortune hit ~$1,050,000,000,000. For the next few minutes, it's yours. Good luck spending it all.",
+    summaryTitle:"YOUR SPENDING SPREE",
+    itemsBought:n=>`${n} item${n===1?"":"s"} in your cart`,
+    share:"Create my share card", reset:"Reset",
+    shareNative:"Share", download:"Download", close:"Close",
+    copied:"Caption copied 🎉",
+    mLabel:"MILESTONE",
+    winTitle:"YOU SPENT IT ALL",
+    winText:(time)=>`$1,050,000,000,000 — gone in ${time}. A median worker would need ~17 million years to earn it. Share your receipt 👇`,
+    cardTitle:"I SPENT", cardOf:"OF ELON MUSK'S MONEY",
+    cardTop:"TOP PURCHASES", cardLeft:l=>`${l} left over`,
+    cardLeftZero:"NOTHING LEFT · SPENT IT ALL 🏆",
+    cardNothing:"…on absolutely nothing 🤷",
+    shareText:(s)=>`I just spent ${s} of Elon Musk's money 💸 Can you spend a trillion dollars?`,
+    disclaimer:"Parody & entertainment. Net worth estimated as of June 12, 2026 (Forbes / CNBC). Prices are approximate.",
+    credit:'Inspired by <a href="https://neal.fun/spend/" target="_blank" rel="noopener">"Spend Bill Gates\' Money" by Neal Agarwal</a> · Photo: <a href="https://commons.wikimedia.org/wiki/File:Elon_Musk_Royal_Society_(crop2).jpg" target="_blank" rel="noopener">The Royal Society, CC BY-SA</a>, via Wikimedia Commons',
+    facts:[
+      "Spending $1,000,000 a day, you'd need 2,876 years to hit zero.",
+      "Only 19 countries have a GDP larger than this fortune.",
+      "It's more than the GDP of Sweden, Ireland or Taiwan.",
+      "In $1 bills, it would weigh over 1,000,000 tons.",
+      "It's more than the next 5 richest people combined."
+    ],
+    langBtn:"ES"
+  },
+  es:{
+    yourMoney:"TU DINERO", spent:"Gastado",
+    eyebrow:'12 de junio de 2026 · <b>Primer trillonario de la historia</b>',
+    title:'Gasta el dinero de <span class="accent">Elon Musk</span>',
+    lede:"Tras la salida a bolsa de SpaceX, la fortuna de Elon Musk llegó a ~$1.050.000.000.000. Por los próximos minutos, es tuya. Suerte gastándola.",
+    summaryTitle:"TU DERROCHE",
+    itemsBought:n=>`${n} cosa${n===1?"":"s"} en tu carrito`,
+    share:"Crear mi tarjeta", reset:"Reiniciar",
+    shareNative:"Compartir", download:"Descargar", close:"Cerrar",
+    copied:"Texto copiado 🎉",
+    mLabel:"HITO",
+    winTitle:"LO GASTASTE TODO",
+    winText:(time)=>`$1.050.000.000.000 — desaparecidos en ${time}. Un trabajador promedio necesitaría ~17 millones de años para ganarlos. Comparte tu boleta 👇`,
+    cardTitle:"GASTÉ", cardOf:"DEL DINERO DE ELON MUSK",
+    cardTop:"TOP COMPRAS", cardLeft:l=>`me sobraron ${l}`,
+    cardLeftZero:"NO SOBRÓ NADA · TODO GASTADO 🏆",
+    cardNothing:"…en absolutamente nada 🤷",
+    shareText:(s)=>`Acabo de gastar ${s} del dinero de Elon Musk 💸 ¿Puedes gastar un trillón de dólares?`,
+    disclaimer:"Parodia y entretenimiento. Patrimonio estimado al 12 de junio de 2026 (Forbes / CNBC). Precios aproximados.",
+    credit:'Inspirado en <a href="https://neal.fun/spend/" target="_blank" rel="noopener">«Spend Bill Gates\' Money» de Neal Agarwal</a> · Foto: <a href="https://commons.wikimedia.org/wiki/File:Elon_Musk_Royal_Society_(crop2).jpg" target="_blank" rel="noopener">The Royal Society, CC BY-SA</a>, vía Wikimedia Commons',
+    facts:[
+      "Gastando $1.000.000 al día, demorarías 2.876 años en quedar en cero.",
+      "Solo 19 países tienen un PIB mayor a esta fortuna.",
+      "Es más que el PIB de Suecia, Irlanda o Taiwán.",
+      "En billetes de $1, pesaría más de 1.000.000 de toneladas.",
+      "Es más que las siguientes 5 fortunas del mundo juntas."
+    ],
+    langBtn:"EN"
+  }
+};
+
+let lang = "en";
+let qty = ITEMS.map(()=>0);
+let displayedBalance = TOTAL;
+let maxMilestoneShown = 0;
+let firstBuyAt = null;
+let winShown = false;
+
+const fmt = n => "$" + Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g, lang==="es"?".":",");
+const fmtShort = n => {
+  if(n>=1e12) return "$"+(n/1e12).toFixed(2).replace(/\.?0+$/,"")+"T";
+  if(n>=1e9)  return "$"+(n/1e9).toFixed(1).replace(/\.0$/,"")+"B";
+  if(n>=1e6)  return "$"+(n/1e6).toFixed(1).replace(/\.0$/,"")+"M";
+  if(n>=1e3)  return "$"+(n/1e3).toFixed(0)+"K";
+  return "$"+n;
+};
+const spentTotal = () => qty.reduce((a,q,i)=>a+q*ITEMS[i].p,0);
+const balance = () => TOTAL - spentTotal();
+
+const grid = document.getElementById("grid");
+function buildGrid(){
+  grid.innerHTML = "";
+  ITEMS.forEach((it,i)=>{
+    const card = document.createElement("div");
+    card.className = "item";
+    card.innerHTML = `
+      <div class="emoji">${it.e}</div>
+      <div class="name">${it[lang]}</div>
+      <div class="price">${fmt(it.p)}</div>
+      <div class="controls">
+        <button class="minus" data-i="${i}" data-a="-1" aria-label="−">−</button>
+        <input class="qty" type="number" min="0" value="${qty[i]}" data-i="${i}" inputmode="numeric" aria-label="Qty">
+        <button class="plus" data-i="${i}" data-a="1" aria-label="+">＋</button>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+grid.addEventListener("click", e=>{
+  const b = e.target.closest("button[data-i]");
+  if(!b) return;
+  const i = +b.dataset.i, a = +b.dataset.a;
+  if(a===1 && balance() < ITEMS[i].p){ flashBroke(); return; }
+  if(a===1 && firstBuyAt===null) firstBuyAt = Date.now();
+  qty[i] = Math.max(0, qty[i]+a);
+  b.parentElement.querySelector(".qty").value = qty[i];
+  update();
+});
+grid.addEventListener("change", e=>{
+  const inp = e.target.closest("input.qty");
+  if(!inp) return;
+  const i = +inp.dataset.i;
+  let v = Math.max(0, Math.floor(+inp.value||0));
+  const maxAfford = qty[i] + Math.floor(balance()/ITEMS[i].p);
+  if(v > maxAfford){ v = maxAfford; flashBroke(); }
+  if(v > qty[i] && firstBuyAt===null) firstBuyAt = Date.now();
+  qty[i] = v; inp.value = v;
+  update();
+});
+
+const balanceEl = document.getElementById("balance");
+let animId = null;
+function animateBalance(){
+  if(animId) cancelAnimationFrame(animId);
+  const step = ()=>{
+    const target = balance();
+    const diff = target - displayedBalance;
+    if(Math.abs(diff) < 1){ displayedBalance = target; balanceEl.textContent = fmt(displayedBalance); return; }
+    displayedBalance += diff*0.25;
+    balanceEl.textContent = fmt(displayedBalance);
+    animId = requestAnimationFrame(step);
+  };
+  animId = requestAnimationFrame(step);
+}
+function flashBroke(){
+  balanceEl.classList.add("broke");
+  setTimeout(()=>balanceEl.classList.remove("broke"), 420);
+}
+
+const mEl = document.getElementById("milestone");
+let mTimer = null;
+function checkMilestones(sp){
+  let hit = null;
+  for(const m of MILESTONES){
+    if(sp >= m.v && m.v > maxMilestoneShown) hit = m;
+  }
+  if(hit){
+    maxMilestoneShown = hit.v;
+    document.getElementById("mEmoji").textContent = hit.e;
+    document.getElementById("mLabel").textContent = I18N[lang].mLabel;
+    document.getElementById("mText").textContent = hit[lang];
+    mEl.classList.add("show");
+    clearTimeout(mTimer);
+    mTimer = setTimeout(()=>mEl.classList.remove("show"), 4200);
+    if(navigator.vibrate) navigator.vibrate(18);
+  }
+  if(sp >= TOTAL && !winShown){
+    winShown = true;
+    showWin();
+  }
+}
+
+function showWin(){
+  const t = I18N[lang];
+  let timeStr = "—";
+  if(firstBuyAt){
+    const s = Math.round((Date.now()-firstBuyAt)/1000);
+    timeStr = s<60 ? s+"s" : Math.floor(s/60)+"m "+(s%60)+"s";
+  }
+  document.getElementById("winText").textContent = t.winText(timeStr);
+  document.getElementById("win").classList.add("open");
+  confetti();
+}
+function confetti(){
+  const colors = ["#1ED760","#FAFAFA","#8A8A8A","#1ED760","#FAFAFA"];
+  for(let i=0;i<80;i++){
+    const p = document.createElement("div");
+    const sz = 5+Math.random()*8;
+    p.style.cssText = `position:fixed;z-index:120;top:-20px;left:${Math.random()*100}vw;
+      width:${sz}px;height:${sz*0.6}px;background:${colors[i%colors.length]};
+      border-radius:2px;pointer-events:none;`;
+    document.body.appendChild(p);
+    p.animate([
+      {transform:`translateY(0) rotate(0deg)`,opacity:1},
+      {transform:`translateY(${innerHeight+60}px) rotate(${360+Math.random()*720}deg) translateX(${(Math.random()-0.5)*200}px)`,opacity:.9}
+    ],{duration:2200+Math.random()*1800,easing:"cubic-bezier(.2,.6,.4,1)"})
+    .onfinish = ()=>p.remove();
+  }
+}
+document.getElementById("winClose").addEventListener("click", ()=>document.getElementById("win").classList.remove("open"));
+document.getElementById("winShare").addEventListener("click", ()=>{
+  document.getElementById("win").classList.remove("open");
+  openCard();
+});
+
+function update(){
+  animateBalance();
+  const sp = spentTotal();
+  document.getElementById("spentAmt").textContent = fmt(sp);
+  const pct = sp/TOTAL*100;
+  document.getElementById("spentPct").textContent = pct.toFixed(4).replace(".", lang==="es"?",":".")+"%";
+  document.getElementById("spentFill").style.width = Math.min(100,pct)+"%";
+  document.getElementById("summaryAmt").textContent = fmt(sp);
+  document.getElementById("summaryCount").textContent = I18N[lang].itemsBought(qty.filter(q=>q>0).length);
+  document.getElementById("fabAmt").textContent = fmtShort(sp);
+  document.getElementById("fab").classList.toggle("on", sp>0);
+  checkMilestones(sp);
+}
+
+/* ===== SHARE CARD 1080×1350 — minimal oscura ===== */
+const canvas = document.getElementById("cardCanvas");
+const ctx = canvas.getContext("2d");
+function roundRect(x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+function drawCard(){
+  const t = I18N[lang];
+  const W=1080, H=1350;
+  // fondo negro con viñeta sutil
+  ctx.fillStyle = "#0A0A0A";
+  ctx.fillRect(0,0,W,H);
+  const rg = ctx.createRadialGradient(W/2,H*0.32,80,W/2,H*0.32,900);
+  rg.addColorStop(0,"rgba(30,215,96,.10)");
+  rg.addColorStop(1,"rgba(30,215,96,0)");
+  ctx.fillStyle = rg;
+  ctx.fillRect(0,0,W,H);
+  // marco fino
+  ctx.strokeStyle = "rgba(255,255,255,.10)";
+  ctx.lineWidth = 2;
+  roundRect(40,40,W-80,H-80,36);
+  ctx.stroke();
+
+  // "I SPENT"
+  ctx.textAlign="center";
+  ctx.fillStyle="rgba(255,255,255,.55)";
+  ctx.font="700 36px -apple-system,'Segoe UI',Roboto,Arial";
+  let title = t.cardTitle;
+  // letter spacing manual
+  ctx.fillText(title.split("").join("\u200A\u200A"), W/2, 200);
+
+  // monto gigante en verde
+  const amount = fmt(spentTotal());
+  let fs = 104;
+  ctx.font=`800 ${fs}px ui-monospace,'SF Mono',Menlo,Consolas,monospace`;
+  let tw = ctx.measureText(amount).width;
+  while(tw > W-180 && fs > 44){ fs-=4; ctx.font=`800 ${fs}px ui-monospace,'SF Mono',Menlo,Consolas,monospace`; tw = ctx.measureText(amount).width; }
+  ctx.fillStyle="#1ED760";
+  ctx.fillText(amount, W/2, 330);
+
+  // "OF ELON MUSK'S MONEY"
+  ctx.fillStyle="#FAFAFA";
+  ctx.font="800 38px -apple-system,'Segoe UI',Roboto,Arial";
+  ctx.fillText(t.cardOf, W/2, 410);
+
+  // línea divisoria
+  ctx.strokeStyle="rgba(255,255,255,.12)";
+  ctx.beginPath(); ctx.moveTo(120,480); ctx.lineTo(W-120,480); ctx.stroke();
+
+  // top compras
+  const bought = ITEMS.map((it,i)=>({it,q:qty[i],tot:qty[i]*ITEMS[i].p}))
+    .filter(x=>x.q>0).sort((a,b)=>b.tot-a.tot).slice(0,5);
+
+  ctx.fillStyle="rgba(255,255,255,.45)";
+  ctx.font="700 26px -apple-system,'Segoe UI',Roboto,Arial";
+  ctx.textAlign="left";
+  ctx.fillText(t.cardTop, 120, 560);
+
+  if(!bought.length){
+    ctx.fillStyle="rgba(255,255,255,.6)";
+    ctx.font="600 36px -apple-system,'Segoe UI',Roboto,Arial";
+    ctx.textAlign="center";
+    ctx.fillText(t.cardNothing, W/2, 800);
+  } else {
+    bought.forEach((b,i)=>{
+      const y = 650 + i*98;
+      ctx.textAlign="left";
+      ctx.font="50px serif";
+      ctx.fillText(b.it.e, 120, y+14);
+      ctx.fillStyle="#FAFAFA";
+      ctx.font="600 34px -apple-system,'Segoe UI',Roboto,Arial";
+      let name = b.it[lang] + (b.q>1 ? `  ×${b.q.toLocaleString(lang==="es"?"es":"en")}` : "");
+      if(name.length>28) name = name.slice(0,27)+"…";
+      ctx.fillText(name, 205, y+10);
+      ctx.textAlign="right";
+      ctx.fillStyle="#1ED760";
+      ctx.font="800 34px ui-monospace,'SF Mono',Menlo,Consolas,monospace";
+      ctx.fillText(fmtShort(b.tot), W-120, y+10);
+      // línea sutil entre items
+      if(i<bought.length-1){
+        ctx.strokeStyle="rgba(255,255,255,.07)";
+        ctx.beginPath(); ctx.moveTo(120,y+48); ctx.lineTo(W-120,y+48); ctx.stroke();
+      }
+    });
+  }
+
+  // sobrante
+  ctx.textAlign="center";
+  ctx.fillStyle="rgba(255,255,255,.55)";
+  ctx.font="600 32px -apple-system,'Segoe UI',Roboto,Arial";
+  const leftTxt = balance()<=0 ? t.cardLeftZero : t.cardLeft(fmtShort(balance()));
+  ctx.fillText(leftTxt, W/2, 1190);
+
+  // URL
+  ctx.fillStyle="#FAFAFA";
+  ctx.font="800 34px -apple-system,'Segoe UI',Roboto,Arial";
+  ctx.fillText(SITE_DISPLAY, W/2, H-90);
+}
+
+const modal = document.getElementById("modal");
+let lastBlob = null;
+function openCard(){
+  drawCard();
+  canvas.toBlob(blob=>{
+    lastBlob = blob;
+    const url = URL.createObjectURL(blob);
+    document.getElementById("cardImg").src = url;
+    document.getElementById("downloadLink").href = url;
+    modal.classList.add("open");
+  }, "image/png");
+}
+document.getElementById("shareBtn").addEventListener("click", openCard);
+document.getElementById("fab").addEventListener("click", openCard);
+document.getElementById("closeModal").addEventListener("click", ()=>modal.classList.remove("open"));
+modal.addEventListener("click", e=>{ if(e.target===modal) modal.classList.remove("open"); });
+
+document.getElementById("nativeShare").addEventListener("click", async ()=>{
+  const t = I18N[lang];
+  const text = t.shareText(fmt(spentTotal())) + " https://" + SITE_URL;
+  if(lastBlob && navigator.canShare && navigator.canShare({files:[new File([lastBlob],"card.png",{type:"image/png"})]})){
+    try{
+      await navigator.share({
+        files:[new File([lastBlob],"my-trillion-receipt.png",{type:"image/png"})],
+        text
+      });
+      return;
+    }catch(e){}
+  }
+  try{ await navigator.clipboard.writeText(text); showToast(t.copied); }catch(e){}
+});
+
+document.getElementById("resetBtn").addEventListener("click", ()=>{
+  qty = ITEMS.map(()=>0);
+  maxMilestoneShown = 0; firstBuyAt = null; winShown = false;
+  buildGrid(); update();
+});
+
+const toast = document.getElementById("toast");
+function showToast(msg){
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(()=>toast.classList.remove("show"), 2200);
+}
+
+function applyLang(){
+  const t = I18N[lang];
+  document.documentElement.lang = lang;
+  document.querySelectorAll("[data-i18n]").forEach(el=>{
+    const v = t[el.dataset.i18n];
+    if(typeof v === "string") el.textContent = v;
+  });
+  document.querySelectorAll("[data-i18n-html]").forEach(el=>{
+    const v = t[el.dataset.i18nHtml];
+    if(typeof v === "string") el.innerHTML = v;
+  });
+  document.getElementById("langBtn").textContent = t.langBtn;
+  document.getElementById("factoid").textContent = t.facts[Math.floor(Math.random()*t.facts.length)];
+  buildGrid(); update();
+}
+document.getElementById("langBtn").addEventListener("click", ()=>{
+  lang = lang==="en" ? "es" : "en";
+  applyLang();
+});
+
+applyLang();
+</script>
+</body>
+</html>
